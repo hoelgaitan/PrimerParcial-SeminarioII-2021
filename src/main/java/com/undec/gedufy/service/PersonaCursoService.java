@@ -85,7 +85,7 @@ public class PersonaCursoService {
         return response;
     }
 
-    public Response save(PersonaCursoDTO input) {
+    public Response save(PersonaCursoDTO input) throws Exception {
         Response response = new Response();
         try {
             // TODO: verificar que exista el curso (por id). Si no existe devolver status/message indicandolo en el response
@@ -123,8 +123,6 @@ public class PersonaCursoService {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
-            response.setStatus(500);
-            response.setData("No existe");
             throw e;
         }
         return response;
