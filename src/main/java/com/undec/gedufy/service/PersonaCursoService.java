@@ -97,7 +97,8 @@ public class PersonaCursoService {
 
             }
             // TODO: verificar que exista la persona (por email). Si no existe devolver status/message indicandolo en el response
-            Persona persona = personaRepository.findAllByEmailContaining(input.getPersonaDTO().getEmail());
+            Persona persona = personaRepository.findById(input.getPersonaDTO().getId()).get();
+            //Persona persona = personaRepository.findAllByEmailContaining(input.getPersonaDTO().getEmail());
             //Persona persona = personaRepository.findByEmail(input.getPersonaDTO().getEmail()).get();
             if(persona.getEmail()==null){
                 Exception e = new Exception();
