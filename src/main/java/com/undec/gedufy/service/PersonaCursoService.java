@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,17 +35,23 @@ public class PersonaCursoService {
 
     public Response findAll() {
         Response response = new Response();
+
         try {
             // TODO: obtener la lista completa de PersonaCurso
+            List<PersonaCurso> personaCursoList = personaCursoRepository.findAll();
 
             // TODO: castear la lista a PersonaCursoDTO
+            List<PersonaCursoDTO> personaCursoDTOS = new ArrayList<>();
+            PersonaCursoDTO personaCursoDTO = new PersonaCursoDTO();
 
-            // TODO: retornar lista PersonaCursoDTO en el response
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
+            response.setData(personaCursoDTO.getPersonaCursoDTOList(personaCursoList));
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage());
+                e.printStackTrace();
+                throw e;
+            }
+        // TODO: retornar lista PersonaCursoDTO en el response
+
         return response;
     }
 
@@ -78,23 +85,33 @@ public class PersonaCursoService {
         return response;
     }
 
-    public Response save(Object input) {
+    public Response save(PersonaCursoDTO input) {
         Response response = new Response();
         try {
             // TODO: verificar que exista el curso (por id). Si no existe devolver status/message indicandolo en el response
-
+            Curso curso = cursoRepository.findById(input.getId()).get();
             // TODO: verificar que exista la persona (por email). Si no existe devolver status/message indicandolo en el response
-
+            Persona persona = personaRepository.findByEmail(input.getPersonaDTO().getEmail()).get();
             // TODO: castear de PersonaCursoDTO a PersonaCurso
+           /* PersonaCurso personaCurso = new PersonaCurso();
+            personaCurso.setId(input.getId());
+            personaCurso.setObservacion(input.getObservacion());
+            personaCurso.setCurso(curso);
+            personaCurso.setPersona(persona);
 
+            */
+            PersonaCurso personaCurso = new PersonaCursoDTO().getPersonaCurso(input,curso,persona);
             // TODO: save
-
+            personaCursoRepository.save(personaCurso);
             // TODO: en el response.data devolver el objeto guardado
-            
+            response.setData(personaCurso);
+            response.setMessage("guardado correctamente");
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             e.printStackTrace();
+            response.setStatus(500);
+            response.setData("No existe");
             throw e;
         }
         return response;
