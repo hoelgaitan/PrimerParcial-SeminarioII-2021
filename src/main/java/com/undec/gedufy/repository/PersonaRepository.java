@@ -15,4 +15,5 @@ public interface PersonaRepository extends JpaRepository<Persona, Integer> {
     boolean existsPersonaByEmail(String email);
 
 
+    Persona findAllByEmailContaining(String email);
 }
