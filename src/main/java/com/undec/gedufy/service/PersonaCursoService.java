@@ -90,10 +90,21 @@ public class PersonaCursoService {
         try {
             // TODO: verificar que exista el curso (por id). Si no existe devolver status/message indicandolo en el response
             Curso curso = cursoRepository.findById(input.getCursoDTO().getId()).get();
+            if(curso.getId()==null){
+                Exception e = new Exception();
+                response.setMessage("no existe curso");
+                throw e;
 
+            }
             // TODO: verificar que exista la persona (por email). Si no existe devolver status/message indicandolo en el response
             Persona persona = personaRepository.findAllByEmailContaining(input.getPersonaDTO().getEmail());
             //Persona persona = personaRepository.findByEmail(input.getPersonaDTO().getEmail()).get();
+            if(persona.getEmail()==null){
+                Exception e = new Exception();
+                response.setMessage("no existe la persona");
+                throw e;
+
+            }
             // TODO: castear de PersonaCursoDTO a PersonaCurso
            /* PersonaCurso personaCurso = new PersonaCurso();
             personaCurso.setId(input.getId());
